@@ -7,15 +7,15 @@ var express = require('express'),
 router.get('/question', function(req, res) {
 	// Gets a random question by counting the number of total documents in the Trivia collection
 	Trivia.count({}, function(err, c) {
-		    if(err) {
-			   console.log('Probably no questions in the db');
-			   console.log(err);
-		    } 
-		    else {
-			   console.log('count in database is: ' + c);
-			   var randomId = Math.floor(Math.random() *(c-1)+1);
-		    }
-	    });
+		if(err) {
+			console.log('Probably no questions in the db');
+			console.log(err);
+		} 
+		else {
+			console.log('count in database is: ' + c);
+			var randomId = Math.floor(Math.random() *(c-1)+1);
+		}
+	});
 	console.log('Random answer id retrieved: ' + randomId);
 	Trivia.findOne({'answerid' : randomId}, 'question', function(err, trivia) {
 		if (err) throw err;
