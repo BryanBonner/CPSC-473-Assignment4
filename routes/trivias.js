@@ -62,18 +62,19 @@ router.post('/answer', function(req, res) {
 		if (err) throw err;
 		if (trivia.answer == useranswer) {
 			console.log('correct');
+			client.incr('right');
 		} else {
 			console.log('incorrect');
+			client.incr('wrong');
 		}
 	});
 });
 
-// GET score
+// GET score - gets the right answers and logs
+//  **TO DO** use 'mget' to get a json object of right AND wrong answers to display
 router.get('/score', function(req, res) {
-	//redis keeps track of score on the post /answer and displays here
-	// *Ran out of time
-// 	var foo = client.mget('right', 'wrong');
-// 	console.log(foo);
+	var right = client.get('right');
+	console.log('Right: ', right);
 });
 
 module.exports = router;
