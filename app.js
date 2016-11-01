@@ -4,11 +4,11 @@
 // Dependencies found in package.json
 const express = require('express'),
       expressValidator = require('express-validator'),
-      bodyParser = require('body-parser')
+      bodyParser = require('body-parser'),
       mongoose = require('mongoose'),
       mongo = require('mongodb'),
       path = require('path'),
-      redis = require("redis"),
+      redis = require('redis'),
       client = redis.createClient(),
       exphbs = require('express-handlebars');
 
@@ -43,10 +43,12 @@ db.once('open', function() {
     console.log("Successfully connected to Database");
 });
 
-// Display redis connection success
+// Log successful redis connection & set 'right' and 'wrong key' values to 0
 client.on('connect', function() {
     console.log('Redis Connected');
 });
+client.mset('right', '0', 'wrong', '0');
+
 
 // Set our routes
 app.use('/', routes);
