@@ -9,3 +9,4 @@ To Run:
  * Navigate to project directory
  * $npm install
  * $node app.js
+ * Go to http://localhost:3000
