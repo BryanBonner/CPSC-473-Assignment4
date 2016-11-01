@@ -8,61 +8,64 @@ router.get('/question', function(req, res) {
 	// Gets a random question by counting the number of total documents in the Trivia collection
 	Trivia.count({}, function(err, c) {
 		    if(err) {
-			    console.log(err);
+			   console.log('Probably no questions in the db');
+			   console.log(err);
 		    } 
 		    else {
 			   console.log('count in database is: ' + c);
-			   return c;
+			   var randomId = Math.floor(Math.random() *(c-1)+1);
 		    }
 	    });
-	var answerid = Math.floor(Math.random() *(count-1)+1);
-	console.log('Random answer id: ' + answerid);
-	Trivia.findOne({'answerid' : answerid}, 'question', function(err, trivia) {
+	console.log('Random answer id retrieved: ' + randomId);
+	Trivia.findOne({'answerid' : randomId}, 'question', function(err, trivia) {
 		if (err) throw err;
 		console.log(trivia.question);
 	});
 });
 
 // POST question - creates a new trivia question
+//   -Grabs user field data then queries database for a count of total documents in the collection
+//   -Increments the document count by 1 and assigns it as answer id of the question
+//   -Writes question to database
 router.post('/question', function(req, res) {
 	var question = req.body.question,
 	    answer = req.body.answer,
+	    count = 0;
+	
 	    Trivia.count({}, function(err, c) {
 		    if(err) {
 			    console.log(err);
 		    } 
 		    else {
-			   console.log('c var in database is: ' + c);
-			   newTrivia = new Trivia({
+			    count = c + 1;
+			    newTrivia = new Trivia({
 				question: question,
 				answer: answer,
-				answerid: c+1
+				answerid: count
 			   });
 		    }
 	    });
 	
-	console.log('Question: ' + question + 'Answer: ' + answer);
 	newTrivia.save(function(err) {
 		if(err) throw err;
-		console.log('errors');
 	});
 	res.send('Question: ' + question + ' Answer: ' + answer);
 });
 
 // POST answer
 router.post('/answer', function(req, res) {
-		var answerid = req.body.answerid,
-		    useranswer = req.body.useranswer;
-
-		//Query database for answer based on the answerid and compare it with user
-		Trivia.findOne({'answerid' : answerid}, 'answer', function(err, trivia) {
-			if (err) throw err;
-			if (trivia.answer == useranswer) {
-				console.log('correct');
-			} else {
-				console.log('incorrect');
-			}
-		});
+	var answerid = req.body.answerid,
+	    useranswer = req.body.useranswer;
+	
+	//Query database for answer based on the answerid and compare it with user
+	Trivia.findOne({'answerid' : answerid}, 'answer', function(err, trivia) {
+		if (err) throw err;
+		if (trivia.answer == useranswer) {
+			console.log('correct');
+		} else {
+			console.log('incorrect');
+		}
+	});
 });
 
 // GET score
