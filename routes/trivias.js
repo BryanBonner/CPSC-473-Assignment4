@@ -27,20 +27,20 @@ router.get('/question', function(req, res) {
 router.post('/question', function(req, res) {
 	var question = req.body.question,
 	    answer = req.body.answer,
-	    count = Trivia.count({}, function(err, c) {
+	    Trivia.count({}, function(err, c) {
 		    if(err) {
 			    console.log(err);
 		    } 
 		    else {
-			   console.log('count in database is: ' + c);
-			   return c;
+			   console.log('c var in database is: ' + c);
+			   newTrivia = new Trivia({
+				question: question,
+				answer: answer,
+				answerid: c+1
+			   });
 		    }
 	    });
-	newTrivia = new Trivia({
-		question: question,
-		answer: answer,
-		answerid: count+1
-	});
+	
 	console.log('Question: ' + question + 'Answer: ' + answer);
 	newTrivia.save(function(err) {
 		if(err) throw err;
