@@ -17,19 +17,29 @@ router.get('/question', function(req, res) {
 
 // POST question - creates a new trivia question **complete**
 router.post('/question', function(req, res) {
-		var question = req.body.question,
-				answer = req.body.answer,
-				newTrivia = new Trivia({
-					question: question,
-					answer: answer,
-				});
-				console.log('Question: ' + question + 'Answer: ' + answer);
-				newTrivia.save(function(err) {
-					if(err) throw err;
-						console.log('errors');
-				});
-				res.send('Question: ' + question + ' Answer: ' + answer);
-		});
+	var question = req.body.question,
+	    answer = req.body.answer,
+	    count = Trivia.count({}, function(err, c) {
+		    if(err) {
+			    console.log(err);
+		    } 
+		    else {
+			   console.log('count in database is: ' + c);
+			   return c;
+		    }
+	    };
+	    newTrivia = new Trivia({
+		    question: question,
+		    answer: answer,
+		    answerid: count+1
+	    });
+	console.log('Question: ' + question + 'Answer: ' + answer);
+	newTrivia.save(function(err) {
+		if(err) throw err;
+		console.log('errors');
+	});
+	res.send('Question: ' + question + ' Answer: ' + answer);
+});
 
 // POST answer
 router.post('/answer', function(req, res) {
