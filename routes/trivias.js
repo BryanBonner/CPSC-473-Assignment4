@@ -59,6 +59,7 @@ router.post('/answer', function(req, res) {
 			if (err) throw err;
 			if (trivia.answer == useranswer) {
 				console.log('correct');
+				client.incr
 			} else {
 				console.log('incorrect');
 			}
@@ -69,6 +70,8 @@ router.post('/answer', function(req, res) {
 router.get('/score', function(req, res) {
 	//redis keeps track of score on the post /answer and displays here
 	// *Ran out of time
+// 	var foo = client.mget('right', 'wrong');
+// 	console.log(foo);
 });
 
 module.exports = router;
