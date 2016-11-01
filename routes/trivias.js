@@ -6,7 +6,7 @@ var express = require('express'),
 // GET question - returns a single trivia question
 router.get('/question', function(req, res) {
 	// Gets a random question by counting the number of total documents in the Trivia collection
-	var count = Trivia.count({}, function(err, c) {
+	Trivia.count({}, function(err, c) {
 		    if(err) {
 			    console.log(err);
 		    } 
