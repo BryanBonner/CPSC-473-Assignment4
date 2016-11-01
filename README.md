@@ -14,7 +14,8 @@ To Run:
 To Do:
  * Implement Redis to count right & wrong answers
   1. Use client.set to set 'right' and 'wrong' to a count of 0 upon start
-  2. Use client.mget to find 'right' and 'wrong' answer count
+  2. Use client.incr to increment right or wrong answer in post /answer
+  3. Use client.mget to find 'right' and 'wrong' answer count
  * Correctly send JSON as response
  
 Bonus:
