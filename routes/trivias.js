@@ -59,7 +59,6 @@ router.post('/answer', function(req, res) {
 			if (err) throw err;
 			if (trivia.answer == useranswer) {
 				console.log('correct');
-				client.incr
 			} else {
 				console.log('incorrect');
 			}
