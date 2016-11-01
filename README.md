@@ -13,7 +13,9 @@ To Run:
 
 To Do:
  * Implement Redis to count right & wrong answers
- * Correctly respond with JSON & output in console
+  1. Use client.set to set 'right' and 'wrong' to a count of 0 upon start
+  2. Use client.mget to find 'right' and 'wrong' answer count
+ * Correctly send JSON as response
  
 Bonus:
  * Make a function in models/trivia.js to return the count the total number of collections
