@@ -8,8 +8,6 @@ const express = require('express'),
       mongoose = require('mongoose'),
       mongo = require('mongodb'),
       path = require('path'),
-      redis = require('redis'),
-      client = redis.createClient(),
       exphbs = require('express-handlebars');
 
 // Create our Routes & Schema vars
@@ -43,11 +41,7 @@ db.once('open', function() {
     console.log("Successfully connected to Database");
 });
 
-// Log successful redis connection & set 'right' and 'wrong key' values to 0
-client.on('connect', function() {
-    console.log('Redis Connected');
-});
-client.mset('right', '0', 'wrong', '0');
+
 
 
 // Set our routes
