@@ -8,6 +8,7 @@ Redis returning false - still need to make it asynchronus
 To Run:
  * Navigate to project directory
  * Run redis
+ * Db is connected to Mlabs
  * $npm install
  * $node app.js
  * Go to http://localhost:3000
