@@ -49,18 +49,18 @@ router.post('/question', function(req, res) {
 			    console.log(err);
 		    }
 		    else {
-          count = c + 1;
+			    count = c + 1;
 			    var newTrivia = new Trivia({
-            question: question,
+				    question: question,
 				    answer: answer,
 				    answerid: count
 			    });
-          newTrivia.save(function(err) {
-            if(err) throw err;
-          });
-          res.json('question: ' + question + 'Answer: ' + answer + 'Answer Id: '
-          + count);
-        }
+			    newTrivia.save(function(err) {
+				    if(err) throw err;
+			    });
+			    res.json('question: ' + question + 'Answer: ' + answer + 'Answer Id: '
+				     + count);
+		    }
       });
 });
 
