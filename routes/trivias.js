@@ -18,7 +18,7 @@ client.set('wrong', 0);
 // GET question - returns a single trivia question
 router.get('/question', jsonParser, function(req, res) {
 	// Gets a random question by counting the number of total documents in
-  //    the Trivia collection
+	//  the Trivia collection
 	Trivia.count({}, function(err, c) {
 		if(err) {
 			console.log('Probably no questions in the db');
@@ -26,11 +26,11 @@ router.get('/question', jsonParser, function(req, res) {
 		}
 		else {
 			var randomId = Math.floor(Math.random() *(c-1)+1);
-      Trivia.findOne({'answerid' : randomId}, 'question', function(err, trivia) {
-        if (err) throw err;
-        console.log(trivia.question);
-        res.json('question: ' + trivia.question + 'Answer Id: ' + randomId);
-      });
+			Trivia.findOne({'answerid' : randomId}, 'question', function(err, trivia) {
+				if (err) throw err;
+				console.log(trivia.question);
+				res.json('question: ' + trivia.question + 'Answer Id: ' + randomId);
+			});
 		}
 	});
 });
@@ -43,8 +43,8 @@ router.post('/question', function(req, res) {
 	var question = req.body.question,
 	    answer = req.body.answer,
 	    count = 0;
-
-      Trivia.count({}, function(err, c) {
+	
+	Trivia.count({}, function(err, c) {
 		    if(err) {
 			    console.log(err);
 		    }
@@ -82,7 +82,7 @@ router.post('/answer', function(req, res) {
 	});
 });
 
-// GET score - gets the right answers and logs
+// GET score - TODO: use mget and get reply as callback
 router.get('/score', function(req, res) {
   var rightAnswers = client.get('right'),
       wrongAnswers = client.get('wrong'),
