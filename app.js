@@ -41,9 +41,6 @@ db.once('open', function() {
     console.log("Successfully connected to Database");
 });
 
-
-
-
 // Set our routes
 app.use('/', routes);
 app.use('/trivia', trivia);
