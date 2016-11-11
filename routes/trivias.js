@@ -19,9 +19,14 @@ client.set('wrong', 0);
 // GET question - returns a single trivia question
 router.get('/question', jsonParser, function(req, res) {
 	// Gets a random question by counting the number of total documents in
+<<<<<<< HEAD
   //    the Trivia collection
 
   Trivia.count({}, function(err, c) {
+=======
+	//  the Trivia collection
+	Trivia.count({}, function(err, c) {
+>>>>>>> origin/master
 		if(err) {
 			console.log('Probably no questions in the db');
 			console.log(err);
@@ -29,12 +34,20 @@ router.get('/question', jsonParser, function(req, res) {
 		else {
 
 			var randomId = Math.floor(Math.random() *(c-1)+1);
+<<<<<<< HEAD
       Trivia.findOne({'answerid' : randomId}, 'question', function(err, trivia) {
         if (err) throw err;
         console.log({question: trivia.question});
         currentQuestion = trivia.question;
         res.json({'question': trivia.question});
       });
+=======
+			Trivia.findOne({'answerid' : randomId}, 'question', function(err, trivia) {
+				if (err) throw err;
+				console.log(trivia.question);
+				res.json('question: ' + trivia.question + 'Answer Id: ' + randomId);
+			});
+>>>>>>> origin/master
 		}
 	});
 });
@@ -47,25 +60,30 @@ router.post('/question', function(req, res) {
 	var question = req.body.question,
 	    answer = req.body.answer,
 	    count = 0;
+<<<<<<< HEAD
 
       //counts the total documents in our collection
       Trivia.count({}, function(err, c) {
+=======
+	
+	Trivia.count({}, function(err, c) {
+>>>>>>> origin/master
 		    if(err) {
 			    console.log(err);
 		    }
 		    else {
-          count = c + 1;
+			    count = c + 1;
 			    var newTrivia = new Trivia({
-            question: question,
+				    question: question,
 				    answer: answer,
 				    answerid: count
 			    });
-          newTrivia.save(function(err) {
-            if(err) throw err;
-          });
-          res.json('question: ' + question + 'Answer: ' + answer + 'Answer Id: '
-          + count);
-        }
+			    newTrivia.save(function(err) {
+				    if(err) throw err;
+			    });
+			    res.json('question: ' + question + 'Answer: ' + answer + 'Answer Id: '
+				     + count);
+		    }
       });
 });
 
@@ -95,7 +113,7 @@ router.post('/answer', function(req, res) {
 	});
 });
 
-// GET score - gets the right answers and logs
+// GET score - TODO: use mget and get reply as callback
 router.get('/score', function(req, res) {
   var rightAnswers = client.get('right'),
       wrongAnswers = client.get('wrong'),
