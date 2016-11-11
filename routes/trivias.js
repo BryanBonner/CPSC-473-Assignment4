@@ -8,6 +8,7 @@ var express = require('express'),
 
 var jsonParser = bodyParser.json();
 
+
 // Log successful redis connection & set 'right' and 'wrong key' values to 0
 client.on('connect', function() {
     console.log('Redis Connected');
@@ -19,17 +20,20 @@ client.set('wrong', 0);
 router.get('/question', jsonParser, function(req, res) {
 	// Gets a random question by counting the number of total documents in
   //    the Trivia collection
-	Trivia.count({}, function(err, c) {
+
+  Trivia.count({}, function(err, c) {
 		if(err) {
 			console.log('Probably no questions in the db');
 			console.log(err);
 		}
 		else {
+
 			var randomId = Math.floor(Math.random() *(c-1)+1);
       Trivia.findOne({'answerid' : randomId}, 'question', function(err, trivia) {
         if (err) throw err;
-        console.log(trivia.question);
-        res.json('question: ' + trivia.question + 'Answer Id: ' + randomId);
+        console.log({question: trivia.question});
+        currentQuestion = trivia.question;
+        res.json({'question': trivia.question});
       });
 		}
 	});
@@ -44,6 +48,7 @@ router.post('/question', function(req, res) {
 	    answer = req.body.answer,
 	    count = 0;
 
+      //counts the total documents in our collection
       Trivia.count({}, function(err, c) {
 		    if(err) {
 			    console.log(err);
@@ -66,18 +71,26 @@ router.post('/question', function(req, res) {
 
 // POST answer
 router.post('/answer', function(req, res) {
-	var answerid = req.body.answerid,
-	    useranswer = req.body.useranswer;
-
+	//var answerid = req.body.answerid, //we need to query for the answerid based on question
+	    var useranswer = req.body.useranswer,
+        //we need to get the question to know which question to query for the id
+          answerid;
+          console.log(currentQuestion);
+  Trivia.findOne({'question' : question}, 'answerid', function(err, trivia) {
+  		if (err) throw err;
+      console.log(trivia.answerid);
+  });
 	//Query database for answer based on the answerid and compare it with user
 	Trivia.findOne({'answerid' : answerid}, 'answer', function(err, trivia) {
 		if (err) throw err;
 		if (trivia.answer == useranswer) {
-			console.log('correct');
+      console.log('correct');
 			client.incr('right');
+      res.json({'correct': 'true'});
 		} else {
 			console.log('incorrect');
 			client.incr('wrong');
+      res.json({'correct': 'false'});
 		}
 	});
 });
